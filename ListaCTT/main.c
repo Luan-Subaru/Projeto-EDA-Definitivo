@@ -49,7 +49,7 @@ int main()
         system("cls");
             if (x) {
                 printf("Contato %d inserido com sucesso!", x);
-            } else {
+            } else { //em caso de problemas em algum dado da inserção
                 printf("Nao foi possivel inserir...");
             }
         printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
@@ -72,7 +72,7 @@ int main()
         x = consultaCod(li, codB, &ct_consulta);
         if(x){
             printConsulta(codB, &ct_consulta);
-        }else{
+        }else{ //em caso de codigos inexistentes na lista
             printf("Cliente nao localizado...");
         }
         printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
@@ -100,7 +100,7 @@ int main()
         x = consultaCod(li, codB, &ct_consulta);
         if(x){
             printConsulta(codB, &ct_consulta);
-        }else{
+        }else{ //em caso de codigos inexistentes na lista
             printf("Cliente nao localizado...\n");
             printf("Retornando ao menu...");
             printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
@@ -122,7 +122,7 @@ int main()
             printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
             getchar();
             system("cls");
-        }else{
+        }else{ //caso seja escrito algo diferente de n ou s
             printf("Opcao invalida!");
             printf("Retornando ao menu...");
             printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
@@ -139,7 +139,7 @@ int main()
         x = consultaCod(li, codB, &ct_consulta);
         if(x){
             printConsulta(codB, &ct_consulta);
-        }else{
+        }else{ //Em caso de codigo inexistente na lista
             printf("Cliente nao localizado...\n");
             printf("Retornando ao menu...");
             printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
@@ -162,7 +162,7 @@ int main()
         }else if(r == 'n' || r == 'N'){
             printf("\nCliente nao removido...\n");
             printf("Retornando ao menu...");
-        }else{
+        }else{ //caso seja escrito algo diferente de n ou s
             printf("Opcao invalida!\n");
             printf("Retornando ao menu...");
         }
@@ -173,20 +173,19 @@ int main()
 
         break;
 //
-    case 7: //encerrar PONTO
+    case 7: //encerrar
         x=tamanhoLista(li);
-        if(x){
-            printf("Salvando %d contatos", x);
-        }
+        if(x==0){
+            reiniciaArquivo(); //evita erros caso o arquivo estiver corrompido ou vazio
+            }
         else{
-            printf("Lista de contatos vazia!\n");
+            printf("Salvando %d contatos", x);
+            fecharLista(li);
         }
-        fecharLista(li);
         exit (0);
     default:
         printf("Opcao invalida!!");
         printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
-        getchar();
         getchar();
         system("cls");
         break;
