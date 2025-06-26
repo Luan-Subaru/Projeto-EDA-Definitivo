@@ -139,6 +139,13 @@ int main()
         x = consultaCod(li, codB, &ct_consulta);
         if(x){
             printConsulta(codB, &ct_consulta);
+        }else if{
+            printf("Cliente nao localizado...\n");
+            printf("Retornando ao menu...");
+            printf("\n\n\n\n\n\n\n\n\nPressione ENTER para continuar...");
+            getchar();
+            system("cls");
+            break;
         }else{
             printf("Cliente nao localizado...\n");
             printf("Retornando ao menu...");
