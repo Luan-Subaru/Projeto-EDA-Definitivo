@@ -95,7 +95,7 @@ int main()
 
     case 5: //editar contato
         printf("Digite o codigo do cliente que deseja editar: ");
-        scanf("%d", &codB);
+        scanf("%d", &codB); // caso for colocado um caracter nao numerico, irá voltar ao menu imediatamente
         getchar();
         x = consultaCod(li, codB, &ct_consulta);
         if(x){
@@ -133,7 +133,7 @@ int main()
 
     case 6: //remover contato
         printf("Digite o codigo do cliente que deseja remover: ");
-        scanf("%d", &codB);
+        scanf("%d", &codB); // caso for colocado um caracter nao numerico, irá voltar ao menu imediatamente
         getchar();
 
         x = consultaCod(li, codB, &ct_consulta);
