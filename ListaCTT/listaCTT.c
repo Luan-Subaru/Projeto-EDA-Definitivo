@@ -8,7 +8,7 @@ typedef struct elemento{
     struct elemento *prox;
 }EL;
 
-Lista *criaLista(){
+Lista *criaLista(){ //cria o espaco utilizado durante o programa
     Lista *li;
     li = (Lista*) malloc(sizeof(Lista));
     if(li != NULL){
@@ -17,14 +17,14 @@ Lista *criaLista(){
     return li;
 }
 
-void abortaPrograma(){
+void abortaPrograma(){  //interrompe o programa para evitar erros
     printf("Erro! Lista nao alocada, ");
     printf("programa sera encerrado...\n\n\n");
     system("pause");
     exit(1);
 }
 
-int listaVazia(Lista * li){
+int listaVazia(Lista * li){ //comprova que a lista esta vazia
     if(li == NULL){
         abortaPrograma();
     }
@@ -34,7 +34,7 @@ int listaVazia(Lista * li){
     return 0;
 }
 
-int tamanhoLista(Lista *li){
+int tamanhoLista(Lista *li){ //verifica o tamanho da lista
     if(li == NULL){
         abortaPrograma();
     }
@@ -47,7 +47,7 @@ int tamanhoLista(Lista *li){
     return ac;
 }
 
-int verificarDuplicidade(Lista li, int id) {
+int verificarDuplicidade(Lista li, int id) { // impede a criação de dois codigos iguais
     EL *atual = li;
     while (atual != NULL && atual->dados.id <= id) {
         if (atual->dados.id == id) {
@@ -58,7 +58,7 @@ int verificarDuplicidade(Lista li, int id) {
     return 0;
 }
 
-int insereOrdenado(Lista *li, CTT ct){
+int insereOrdenado(Lista *li, CTT ct){  //utilizado para inserir um usuario, com mudancas na parte de duplicidade e inserção
     if(li == NULL){
         abortaPrograma();
     }
@@ -104,7 +104,7 @@ int insereOrdenado(Lista *li, CTT ct){
     }
 }
 
-int removeOrdenado(Lista *li, int cod){
+int removeOrdenado(Lista *li, int cod){ //utilizado para remover um usuario
     int id;
     if(li == NULL){
         abortaPrograma();
@@ -127,7 +127,7 @@ int removeOrdenado(Lista *li, int cod){
     return id;
 }
 
-int consultaCod(Lista *li, int cod, CTT *ct){
+int consultaCod(Lista *li, int cod, CTT *ct){ //busca pelo codigo no sistema
     if(li == NULL){
         abortaPrograma();
     }
@@ -142,7 +142,7 @@ int consultaCod(Lista *li, int cod, CTT *ct){
     return 0;
 }
 
-void printConsulta(int a, CTT *ct){
+void printConsulta(int a, CTT *ct){ // utilizado na busca por codigo
         system("cls");
         printf("\n========== Cliente %d ==========", a);
         printf("\nCodigo: %d", ct->id);
@@ -155,7 +155,7 @@ void printConsulta(int a, CTT *ct){
         printf("\n=================================");
 }
 
-void printConsulta2(int a, CTT *ct){ //foi criado para n�o apagar a repeti��o da fun��o de buscar por nome
+void printConsulta2(int a, CTT *ct){ //foi criado para não apagar a repetição da função de buscar por nome
         printf("\n========== Cliente %d ==========", a);
         printf("\nCodigo: %d", ct->id);
         printf("\nNome: %s", ct->nome);
@@ -167,13 +167,21 @@ void printConsulta2(int a, CTT *ct){ //foi criado para n�o apagar a repeti��o da
         printf("\n=================================");
 }
 
-CTT coletaDados(){
+CTT coletaDados(){  //utilizada na inserção de dados
     CTT c;
+    int verificador = 0;    //0= falso, 1= verdadeiro
+    char string[100];       //string usada para comparação
 
-    printf("Insira os dados do cliente: \n\n");
-    printf("Codigo: ");
-    scanf("%d", &c.id);
-    getchar();
+    while (!verificador) {  //Antes caso fosse escrito uma letra, aparecia um usuario de codigo 0
+        printf("Codigo: "); // Com isso, agora forca a ser um numero inteiro
+        if (fgets(string, sizeof(string), stdin) != NULL) {
+            if (sscanf(string, "%d", &c.id) == 1) {
+                verificador = 1;
+            } else {
+                printf("Entrada invalida! Insira um numero inteiro para o codigo.\n");
+            }
+        }
+    }
 
     printf("Nome: ");
     fgets(c.nome, sizeof(c.nome), stdin);
@@ -246,7 +254,7 @@ void fecharLista(Lista *li) {
     printf("\nLista salva com sucesso!\n");
 }
 
-void reiniciaArquivo(){
+void reiniciaArquivo(){ //caso a lista for entregue vazia, ela será destruida e recomeçada na abertura do programa
     printf("Nenhum contato salvo.\n");
     printf("Excluindo possiveis contatos em outras sessoes...\n");
     if (remove("listasalva.dat") == 0) {
@@ -257,10 +265,10 @@ void reiniciaArquivo(){
 }
 
 
-    //Abrir a lista, puxando os dados salvos anteriormente PONTO
+    //Abrir a lista, puxando os dados salvos anteriormente
 void abrirLista(Lista *li) {
     FILE *arquivo = fopen("listasalva.dat", "rb");
-    if (arquivo == NULL) {
+    if (arquivo == NULL) { //caso não exista arquivo, outro será gerado
         printf("Nenhum dado existente, gerando nova lista\n");
         FILE *arquivo = NULL;
         do {
@@ -268,7 +276,7 @@ void abrirLista(Lista *li) {
         if (arquivo == NULL) {
             printf("Erro ao criar novo arquivo. Tentando novamente...\n");
         }
-        } while (arquivo == NULL);
+        } while (arquivo == NULL);//repetirá o processo até que seja criado corretamente
         printf("Nova lista criada com sucesso.\n");
         fclose(arquivo);
         return;
@@ -284,18 +292,18 @@ void abrirLista(Lista *li) {
 }
 
 
-void altDados(Lista *li, int cod){
+void altDados(Lista *li, int cod){  //Usada para alterar dados
     EL *no= *li;
 
     while (no != NULL && no->dados.id != cod){
         no=no->prox;
     }
 
-    char string[100];
+    char string[100];   //string usada apenas para armazenamento momentaneo
     printf("Insira o novo nome (deixe em branco para permanecer igual): ");
     fgets(string, sizeof(string), stdin);
     string[strcspn(string, "\n")]= '\0';
-    if(strlen(string) > 0){
+    if(strlen(string) > 0){ //caso seja entregue vazia, nao haverá alterações
         strcpy(no->dados.nome ,string);
         }
 
@@ -340,7 +348,7 @@ void altDados(Lista *li, int cod){
     system("cls");
 }
 
-char converteString(char c){
+char converteString(char c){    // deixa as letras minusculas para a comparação
     if (c >= 'A' && c <= 'Z') {
         return c + 32;
     }
@@ -348,14 +356,14 @@ char converteString(char c){
     return c;
 }
 
-int comparaString(const char *str1, const char *str2){
+int comparaString(const char *str1, const char *str2){  //compara duas strings
     int i, j;
     int len1 = strlen(str1);
     int len2 = strlen(str2);
 
     for (i = 0; i <= len1 - len2; i++) {
         for (j = 0; j < len2; j++) {
-            char c1 = converteString(str1[i + j]);
+            char c1 = converteString(str1[i + j]); //ignora letras maiusculas ou minusculas
             char c2 = converteString(str2[j]);
 
             if (c1 != c2) {
@@ -367,10 +375,10 @@ int comparaString(const char *str1, const char *str2){
         }
     }
 
-    return 0; // N�o encontrou
+    return 0; // Não encontrou
 }
 
-void consultaNome(Lista *li, const char *nome){
+void consultaNome(Lista *li, const char *nome){ //consulta a partir do nome
 
     if (li == NULL || *li == NULL) {
         printf("Lista vazia ou invalida.\n");
@@ -390,6 +398,6 @@ void consultaNome(Lista *li, const char *nome){
     }
 
     if (!encontrou) {
-        printf("N�o foi achado nenhum cliente com o nome que inseriu: %s\n", nome);
+        printf("Não foi achado nenhum cliente com o nome que inseriu: %s\n", nome);
     }
 }
